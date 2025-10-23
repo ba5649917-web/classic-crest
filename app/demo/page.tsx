@@ -23,7 +23,7 @@ const formSchema = z.object({
   email: z.string().email('Invalid email address'),
   phone: z.string().regex(/^\+[1-9]\d{1,14}$/, 'Phone must be in E.164 format (e.g., +14155551234)'),
   company: z.string().min(1, 'Company name is required'),
-  niche: z.enum(['property', 'edu_consultant'], { errorMap: () => ({ message: 'Please select a niche' }) }),
+  niche: z.enum(['property'], { errorMap: () => ({ message: 'Please select a niche' }) }),
   voice: z.enum(['eric', 'alexis', 'salma', 'mehmud'], { errorMap: () => ({ message: 'Please select a voice' }) }),
   consent: z.literal(true, { errorMap: () => ({ message: 'You must provide consent to receive a call' }) }),
 });
@@ -83,13 +83,18 @@ export default function DemoPage() {
   const audioRefs = useRef<Record<string, HTMLAudioElement | null>>({});
 
   const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>({ resolver: zodResolver(formSchema) });
+  register,
+  handleSubmit,
+  setValue,
+  watch,
+  formState: { errors },
+  reset,
+} = useForm<FormData>({
+  resolver: zodResolver(formSchema),
+  defaultValues: {
+    niche: 'property', // 👈 set default here
+  },
+});
 
   const selectedNiche  = watch('niche');
   const selectedVoice  = watch('voice');
@@ -195,13 +200,13 @@ export default function DemoPage() {
             <div className="space-y-2">
               <Label htmlFor="niche" className="text-slate-300">Consultant Type</Label>
               <Select
-                value={selectedNiche || 'property'} // Default value set to Property Consultant
+                value={selectedNiche} // Default value set to Property Consultant
                 onValueChange={(value) => setValue('niche', value as 'property', { shouldValidate: true })}
                 disabled={isSubmitting}
               >
                 <SelectTrigger id="niche" className="bg-slate-800 border-slate-700 text-white">
                   <div className="text-left w-full">
-                    <span>Property Consultant</span>
+                    <span>{selectedNiche === 'property' ? 'Property Consultant' : 'Select Consultant'}</span>
                   </div>
                 </SelectTrigger>
 
