@@ -24,7 +24,7 @@ const formSchema = z.object({
   phone: z.string().regex(/^\+[1-9]\d{1,14}$/, 'Phone must be in E.164 format (e.g., +14155551234)'),
   company: z.string().min(1, 'Company name is required'),
   niche: z.enum(['property'], { errorMap: () => ({ message: 'Please select a niche' }) }),
-  voice: z.enum(['eric', 'alexis', 'salma', 'mehmud'], { errorMap: () => ({ message: 'Please select a voice' }) }),
+  voice: z.enum(['eric','mehmud','salma', 'alexis'], { errorMap: () => ({ message: 'Please select a voice' }) }),
   consent: z.literal(true, { errorMap: () => ({ message: 'You must provide consent to receive a call' }) }),
 });
 type FormData = z.infer<typeof formSchema>;
@@ -43,6 +43,18 @@ const VOICES = {
     avatar: '/avatars/eric.jpg',
     sample: '/voices/eric.mp3',
   },
+
+  mehmud: { 
+    label: (
+      <span className="flex items-center space-x-2">
+        <span>David</span>
+        <img src="/flags/uk.png" alt="UK Flag" className="w-5 h-5 rounded-sm" />
+      </span>
+    ),
+    avatar: '/avatars/mehmud.jpg',
+    sample: '/voices/mehmud.mp3',
+  },
+
   alexis: { 
     label: (
       <span className="flex items-center space-x-2">
@@ -53,27 +65,19 @@ const VOICES = {
     avatar: '/avatars/Alexis.jpg',
     sample: '/voices/Alexis.mp3',
   },
-  salma:  { 
+
+  salma: { 
     label: (
       <span className="flex items-center space-x-2">
-        <span>Salma</span>
+        <span>Tina</span>
         <img src="/flags/uk.png" alt="UK Flag" className="w-5 h-5 rounded-sm" />
       </span>
     ),
     avatar: '/avatars/salma.jpg',
     sample: '/voices/salma.mp3',
   },
-  mehmud: { 
-    label: (
-      <span className="flex items-center space-x-2">
-        <span>mehmud</span>
-        <img src="/flags/uk.png" alt="UK Flag" className="w-5 h-5 rounded-sm" />
-      </span>
-    ),
-    avatar: '/avatars/mehmud.jpg',
-    sample: '/voices/mehmud.mp3',
-  },
 } as const;
+
 type VoiceKey = keyof typeof VOICES;
 
 /** ✅ Default export is a React component */

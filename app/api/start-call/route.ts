@@ -11,7 +11,7 @@ const requestSchema = z.object({
     .string()
     .regex(/^\+[1-9]\d{1,14}$/, 'Phone must be in E.164 format (e.g., +14155551234)'),
   niche: z.enum(['property']),
-  voice: z.enum(['eric', 'alexis', 'salma', 'mehmud']),
+  voice: z.enum(['eric', 'mehmud', 'salma','alexis']),
   consent: z.literal(true),
 });
 
